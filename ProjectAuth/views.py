@@ -5,3 +5,9 @@ from django.http import HttpRequest, HttpResponse
 
 def authHome(req: HttpRequest) -> HttpResponse:
     return HttpResponse("hello auth")
+
+def signup(req: HttpRequest)-> HttpResponse:
+    return HttpResponse("hello signup")
+
+def login(req: HttpRequest)-> HttpResponse:
+    return render(req, "login.html")
