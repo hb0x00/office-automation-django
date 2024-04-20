@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import User
+from django.utils.crypto import get_random_string
 
 # Create your models here.
 class Branch(models.Model):
@@ -72,3 +73,49 @@ class AttendanceRecord(models.Model):
 
     def get_absolute_url(self):
         return reverse("AttendanceRecord_detail", kwargs={"pk": self.pk})
+    
+class Student(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    student_id = models.CharField(max_length=256, unique=True)
+    department = models.CharField(max_length=100)
+    batch = models.PositiveSmallIntegerField()
+    phone_number = models.CharField(max_length=13)
+    fee_pay_status = models.PositiveSmallIntegerField(default=0)  # 0 for unpaid, 1 for paid
+    fee_pay_date = models.DateField(null=True, blank=True)
+    fee_pay_amount = models.PositiveSmallIntegerField(null=True, blank=True)
+
+    @property
+    def is_fee_paid(self):
+        if self.fee_pay_status == 1:
+            return True
+        else:
+            return False
+
+
+    
+    def save(self, *args, **kwargs):
+        if not self.student_id:
+            self.student_id = self.generate_unique_id('STU', 'Student')
+        super().save(*args, **kwargs)
+
+    @staticmethod
+    def generate_unique_id(prefix, model_name):
+        while True:
+            # Generate a new id.
+            possible_id = prefix + '-' + get_random_string(7).upper()
+            try:
+                # Check that the id doesn't already exist in the database.
+                Student.objects.get(student_id=possible_id)
+            except Student.DoesNotExist:
+                return possible_id
+            
+    
+    class Meta:
+        verbose_name = ("Student")
+        verbose_name_plural = ("Students")
+        
+    def __str__(self):
+        return f"{self.user} ({self.department}, Batch {self.batch})"
+    
+    def get_absolute_url(self):
+        return reverse("Student_detail", kwargs={"pk": self.pk})
