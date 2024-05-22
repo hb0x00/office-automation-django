@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     'ProjectAuth.apps.ProjectAuthConfig',
     'Office.apps.OfficeConfig'
 ]
+USE_TZ = True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

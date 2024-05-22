@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block head %}
+
+<title>Leave Management Table</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    th, td {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+</style>
+{% endblock head %}
+{% block body %}
+
+<table>
+    <thead>
+        <tr>
+            <th>Leave Type</th>
+            <th>Employee Name</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Month</th>
+            <th>Year</th>
+            <th>No of Leave Taken</th>
+            <th>Approved</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Example data rows -->
+        {% for employee in data %}
+        <tr>
+            <td>{{employee.leave_type}}</td>
+            <td>{{employee.employee}}</td>
+            <td>{{employee.start_date}}</td>
+            <td>{{employee.end_date}}</td>
+            <td>{{employee.month}}</td>
+            <td>{{employee.year}}</td>
+            <td>{{employee.number_of_leave_taken}}</td>
+            <td>{{employee.approved}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock body %}

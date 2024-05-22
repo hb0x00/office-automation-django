@@ -1,0 +1,43 @@
+
+{% extends "base.html" %}
+
+{% block body %}
+{% load static%}
+
+<style>
+  body{
+    background-image: url("{% static 'office.jpg' %}");
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+</style>
+
+<div class="container col" style="font-weight: 600; height: 95vh; display: flex; align-items: center;">
+  <h1 style="font-weight: bolder; font-size: 5em; color: white;" class="col-md-6">Office Automation System</h1>
+  <div class="wrapp col-md-6" style="background-color: rgba(0, 0, 0, .6); height: 100%; width: 57%; display: flex; justify-content: center; flex-direction: column;" >
+    <div class="description" style="text-align: center; display: flex; justify-content: center; align-items: center;">
+      <div style="text-align: center; width: 90%; color: aliceblue; font-weight: bolder;">
+    
+        The College Office Management System efficiently handles employee records, student leave information, and fee statuses. It streamlines administrative tasks, enhancing productivity and organization. Through robust features, it tracks employee details, including attendance and personal information, facilitating HR management. Additionally, it maintains comprehensive student records, tracking leave requests and approvals, ensuring smooth academic operations. Moreover, it manages fee payments, generating reports on outstanding balances and payment histories. This system optimizes administrative processes, promoting transparency and accountability. Its user-friendly interface empowers staff to effortlessly navigate tasks, fostering a seamless administrative experience for both employees and students alike.
+      </div>
+    </div>
+    <div class="links" style="display: flex; justify-content: center; margin: 2em 0;">
+      <a href="/auth/employee/register" class="btn btn-outline-primary mx-4">Register an Employee</a>
+      <a href="/auth/login" class="btn btn-outline-success">Login Here</a>
+    </div>
+    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: 10px; color: azure;">
+      <h3>Developed by:</h3>
+      <div>
+        <ul style="list-style: none;">
+          <li>Kartik Sharma</li>
+          <li>Pallavi Sharma</li>
+          <li>Shagun Sharma</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock body %}

@@ -3,6 +3,9 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 from django.utils.crypto import get_random_string
 
+LeaveRecord = None
+Employee = None
+
 # Create your models here.
 class Branch(models.Model):
 
@@ -18,62 +21,114 @@ class Branch(models.Model):
     def get_absolute_url(self):
         return reverse("branch_detail", kwargs={"pk": self.pk})
 
+# model for employee
+class tbl_employee(models.Model):
+    # columns
+    employee = models.OneToOneField(User, on_delete=models.CASCADE)
+    branch = models.CharField(max_length=60, choices=(
+        ('computer engineering', 'computer engineering'),
+        ('mechanical engineering', 'mechanical engineering'),
+        ('electrical engineering', 'electrical engineering'),
+        ('electronics and communication engineering', 'electronics and communication engineering'),
+    ))
+    emp_id = models.IntegerField(primary_key=True)
+    email_id = models.CharField(max_length=100, null=True, blank=True)
+    contact_number = models.CharField(max_length=13, null=True, blank=True)
+    designation = models.CharField(max_length=100, choices=(
+        ('Senior lecturer','Senior lecturer'),
+        ('lecturer','lecturer'),
+        ('HOD','HOD'),
+    ), null=True, blank=True)
 
-class Employee(models.Model):
-
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    branch = models.ForeignKey(Branch, on_delete=models.CASCADE)
-
+    # to rander properly in admin
     class Meta:
         verbose_name = ("Employee")
         verbose_name_plural = ("Employees")
 
     def __str__(self):
-        return self.user.username
+        return self.employee.username
 
     def get_absolute_url(self):
-        return reverse("Employee_detail", kwargs={"pk": self.pk})
+        return reverse("Employee_detail", kwargs={"pk": self.emp_id})
 
 # model to store employee leave record
-class LeaveRecord(models.Model):
-    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
-    # get employee set as the user who is logged in
-    leave_type = models.CharField(max_length=100)
-    leave_date = models.DateField(auto_now_add=True)
-    leave_reason = models.CharField(max_length=100)
-    leave_left = models.IntegerField(null=True, default=4)
+class tbl_leave_type(models.Model):
+    leave_id = models.IntegerField(primary_key=True)
+    leave_name = models.CharField(max_length=100)
 
     class Meta:
-        verbose_name = ("Leave Record")
-        verbose_name_plural = ("Leave Records")
+        verbose_name = ("tbl_leave_type")
+        verbose_name_plural = ("tbl_leave_types")
 
     def __str__(self):
-        return str(self.leave_date)
+        """
+        Returns a string representation of the leave type.
+
+        Parameters:
+        self (tbl_leave_type): The instance of the tbl_leave_type model.
+
+        Returns:
+        str: The name of the leave type.
+        """
+        return self.leave_name
 
     def get_absolute_url(self):
-        return reverse("LeaveRecord_detail", kwargs={"pk": self.pk})
-    
+        """
+        Returns the URL for the detail view of the tbl_leave_type instance.
 
-# model form to get leave record through user input
+        Parameters:
+        self (tbl_leave_type): The instance of the tbl_leave_type model.
+
+        Returns:
+        str: The URL for the detail view of the tbl_leave_type instance.
+        """
+        return reverse("tbl_leave_type_detail", kwargs={"pk": self.leave_id})
 
 
-
-# model to store employee attendance record
-class AttendanceRecord(models.Model):
-    employee = models.ForeignKey(Employee, on_delete=models.CASCADE)
-    attendance_date = models.DateField(auto_now_add=True)
-    attendance_status = models.CharField(max_length=100)
+# apply for leave
+class tbl_leave_apply(models.Model):
+    leave_type = models.CharField(max_length=100, 
+        null=True, blank=True
+    )
+    employee = models.ForeignKey(tbl_employee, on_delete=models.CASCADE)
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
+    month = models.CharField(max_length=100)
+    year = models.CharField(max_length=100)
+    number_of_leave_taken = models.IntegerField()
+    approved = models.BooleanField(default=False)    
 
     class Meta:
-        verbose_name = ("Attendance Record")
-        verbose_name_plural = ("Attendance Records")
+        verbose_name = ("tbl_leave_apply")
+        verbose_name_plural = ("tbl_leave_apply")
 
     def __str__(self):
-        return self.employee.user.username
+        """
+        Returns a string representation of the leave apply instance.
+
+        Parameters:
+        self (tbl_leave_apply): The instance of the tbl_leave_apply model.
+
+        Returns:
+        str: A string containing the employee's name, start date of leave, and approval status.
+        """
+        return str(self.employee) + " " + str(self.start_date)[:10] + " Approved Status: " + str(self.approved)
 
     def get_absolute_url(self):
-        return reverse("AttendanceRecord_detail", kwargs={"pk": self.pk})
-    
+        """
+        Returns the URL for the detail view of the tbl_leave_apply instance.
+
+        Parameters:
+        self (tbl_leave_apply): The instance of the tbl_leave_apply model.
+
+        Returns:
+        str: The URL for the detail view of the tbl_leave_apply instance.
+        """
+        return reverse("tbl_leave_apply_detail", kwargs={"pk": self.pk})
+
+
+
+
 class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     student_id = models.CharField(max_length=256, unique=True)

@@ -9,109 +9,62 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <style>
-    /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
-    .row.content {
-        height: 550px
-    }
 
-    /* Set gray background color and 100% height */
-    .sidenav {
-        background-color: #f1f1f1;
-        height: 100%;
-    }
 
-    /* On small screens, set height to 'auto' for the grid */
-    @media screen and (max-width: 767px) {
-        .row.content {
-            height: auto;
-        }
-    }
-    * {
-        font-size: 20;
+    body{
+        background-image: url("{% static 'office_2.jpg'%}");
+        background-repeat: no-repeat;
+        background-size: cover;
     }
 </style>
 {% endblock head %}
 
 {% block body %}
 
-<nav class="navbar navbar-inverse visible-xs">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#">Logo</a>
-        </div>
-        <div class="collapse navbar-collapse" id="myNavbar">
-            <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Dashboard</a></li>
-                <li><a href="#">Name</a></li>
-                <li><a href="#">Branch</a></li>
-            </ul>
-        </div>
-    </div>
-</nav>
 
-<div class="container-fluid">
-    <div class="row content">
-        <div class="col-sm-2 sidenav hidden-xs" style="height: 100vh;">
-            <h2><img src="{% static 'logo.jpeg' %}" height="200px" width="300px"></h2>
-            <ul class="nav nav-pills nav-stacked" style="display: flex; flex-direction: column;">
-                <li class="active"><a href="#section1">Dashboard</a></li>
-                <li><a href="#section2">Name</a></li>
-                <li><a href="#section3">Branch</a></li>
-
-            </ul><br>
-        </div>
+<div class="container-fluid" >
+    <div class="row" >
+        
         <br>
 
-        <div class="col-sm-10">
-            <div class="well">
-                <h4>Dashboard</h4>
-            </div>
-            <div class="row">
+        <div class="col-sm-12">
+            <div class="row" style="display: flex; justify-content: center;">
                 <div class="col-sm-8">
-                    <div class="well">
+                    <div class="well" style="background-color: rgba(0, 0, 0, .5); color: #f1f1f1;">
                         <h3>Apply For Leave</h3>
                         <form method="post">
                             <label for="leave_type" class="form-label">Leave Type:</label>
-                            <input type="text" name="leave_type" class="form form-control">
-                            <label for="leave_reason" class="form-label">Leave Reason:</label>
-                            <input type="text" name="leave_reason" class="form form-control">
+                            <select class="form-select" aria-label="Default select example" name="leave_type">
+                                <option selected>Select leave type:</option>
+                                <option value="Sick Leave">Sick Leave</option>
+                                <option value="Casual Leave">Casual Leave</option>
+                                <option value="Earned Leave">Earned Leave</option>
+                              </select>
+                              
+
+                            <label for="employee" class="form-label">Employee id:</label>
+                            <input type="text" name="e_id" class="form form-control">
+
+                            <label for="employee" class="form-label">Start date:</label>
+                            <input type="date" name="start" class="form form-control">
+
+                            <label for="employee" class="form-label">End date:</label>
+                            <input type="date" name="end" class="form form-control">
+
+                            <label for="employee" class="form-label">Month:</label>
+                            <input type="text" name="month" class="form form-control">
+
+                            <label for="employee" class="form-label">Year:</label>
+                            <input type="text" name="year" class="form form-control">
+
+                            <label for="employee" class="form-label">No of leaves taken:</label>
+                            <input type="text" name="no" class="form form-control">
+
                             <button type="submit" class="btn btn-primary my-3 px-4 py-3">APPLY</button>
                         </form>
                     </div>
                 </div>
                 
-                <div class="col-sm-4" style="height: 100vh;">
-                    <div class="well">
-                        <p>Leave Record</p>
-                    </div>
-                    <table width="100%">
-                        <tr>
-                            <th>Heading</th>
-                            <th>Description</th>
-                            <th>Date</th>
-                        </tr>
-                        {% for record in leave_record %}
-                        <tr>
-                            <td>{{record.leave_type}}</td>
-                            <td>{{record.leave_reason}}</td>
-                            <td>{{record.leave_date}}</td>
-                        </tr>
-                        {% endfor %}
-                    </table>
-
-
-                    <div class="well my-5">
-                        <p>Leave Left</p>
-                        <span style="font-size: 4em">
-                            {{ leave_left}}
-                        </span>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
